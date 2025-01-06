@@ -1,4 +1,6 @@
+import { homes } from "@/components/mock/homesMockData";
 import { data } from "@/components/mock/mockdata";
+import { Parallax } from "@/components/Parallax/Parallax";
 import { ThemedView } from "@/components/ThemedView";
 import { VerticalList } from "@/components/ui/VerticalList";
 import { Link } from "expo-router";
@@ -8,7 +10,8 @@ import { StyleSheet, Text } from "react-native";
 const login = () => {
   return (
     <ThemedView style={styles.container}>
-      <VerticalList dataArray={data} />
+      <Parallax parallax={homes} />
+      {/* <VerticalList dataArray={data} /> */}
     </ThemedView>
   );
 };
