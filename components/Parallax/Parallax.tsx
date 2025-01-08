@@ -35,7 +35,6 @@ const ParallaxItem = ({
   const _translateX = _fullWidth * _scaleFactor * 2;
   const animeStyle = useAnimatedStyle(() => {
     console.log(scrollX);
-
     return {
       transform: [
         { scale: 1 + _scaleFactor },
@@ -46,6 +45,23 @@ const ParallaxItem = ({
             [-_translateX, 0, _translateX],
             Extrapolation.CLAMP
           ),
+        },
+      ],
+    };
+  });
+
+  const textStyles = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          rotate: "-90deg",
+        },
+        {
+          translateY: `${interpolate(
+            scrollX.value,
+            [index - 1, index, index + 1],
+            [-100, 0, 100]
+          )}%`,
         },
       ],
     };
@@ -66,14 +82,37 @@ const ParallaxItem = ({
         style={[StyleSheet.absoluteFillObject, { opacity: 0.6 }, animeStyle]}
         source={{ uri: item.image }}
       />
-      <Text
+      <View
         style={{
-          fontSize: 24,
-          color: "#fff",
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: _screenHight,
         }}
       >
-        {item.name}
-      </Text>
+        <Animated.View
+          style={[
+            {
+              top: _screenHight,
+              transformOrigin: "0% 0%",
+              alignItems: "center",
+              justifyContent: "center",
+            },
+            textStyles,
+          ]}
+        >
+          <Text
+            style={{
+              fontSize: 70,
+              color: "#fff",
+            }}
+            numberOfLines={1}
+            adjustsFontSizeToFit
+          >
+            {item.name}
+          </Text>
+        </Animated.View>
+      </View>
     </View>
   );
 };
