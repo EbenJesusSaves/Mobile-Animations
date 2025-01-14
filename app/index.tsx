@@ -6,13 +6,16 @@ import { VerticalList } from "@/components/ui/VerticalList";
 import { Link } from "expo-router";
 import React from "react";
 import { StyleSheet, Text } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const login = () => {
   return (
-    <ThemedView style={styles.container}>
-      <Parallax parallax={homes} />
-      {/* <VerticalList dataArray={data} /> */}
-    </ThemedView>
+    <GestureHandlerRootView>
+      <ThemedView style={styles.container}>
+        <Parallax parallax={homes} />
+        {/* <VerticalList dataArray={data} /> */}
+      </ThemedView>
+    </GestureHandlerRootView>
   );
 };
 
@@ -23,6 +26,7 @@ const styles = StyleSheet.create({
     flex: 1,
 
     justifyContent: "center",
+    backgroundColor: "#09143c",
   },
   link: {
     marginTop: 15,

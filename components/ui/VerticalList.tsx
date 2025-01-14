@@ -99,8 +99,6 @@ export const VerticalList = ({ dataArray }: Props) => {
     sharedValue.value = e.contentOffset.y / _itemFullSize;
   });
 
-  console.log(sharedValue.value, "this is scroll");
-
   return (
     <Animated.FlatList
       contentContainerStyle={{

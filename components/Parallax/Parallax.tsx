@@ -1,6 +1,7 @@
 import React from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { ParallaxType } from "../mock/homesMockData";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Animated, {
   Extrapolation,
   interpolate,
@@ -21,6 +22,52 @@ const _screenWidth = width * 0.7;
 const _screenHight = _screenWidth * 1.67;
 const _spacing = 16;
 const _fullWidth = _screenWidth + _spacing;
+
+const dummyDetails = Array(10).fill({ temp: 10 });
+
+const DetailsList = ({
+  scrollX,
+  index,
+}: {
+  index: number;
+  scrollX: SharedValue<number>;
+}) => {
+  return (
+    <View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <FontAwesome5 name="temperature-high" size={24} color="white" />
+        <Text style={{ color: "white" }}>Temperature: 400</Text>
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <FontAwesome5 name="temperature-high" size={24} color="white" />
+        <Text style={{ color: "white" }}>Humidity: 120</Text>
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <FontAwesome5 name="temperature-high" size={24} color="white" />
+        <Text style={{ color: "white" }}>Timer: on</Text>
+      </View>
+    </View>
+  );
+};
+
 const ParallaxItem = ({
   item,
   index,
@@ -34,7 +81,6 @@ const ParallaxItem = ({
   const _scaleFactor = 0.2;
   const _translateX = _fullWidth * _scaleFactor * 2;
   const animeStyle = useAnimatedStyle(() => {
-    console.log(scrollX);
     return {
       transform: [
         { scale: 1 + _scaleFactor },
@@ -54,10 +100,7 @@ const ParallaxItem = ({
     return {
       transform: [
         {
-          rotate: "-90deg",
-        },
-        {
-          translateY: `${interpolate(
+          translateX: `${interpolate(
             scrollX.value,
             [index - 1, index, index + 1],
             [-100, 0, 100]
@@ -68,50 +111,63 @@ const ParallaxItem = ({
   });
 
   return (
-    <View
-      style={{
-        height: _screenHight,
-        width: _screenWidth,
-        backgroundColor: "rgba(0,0,0,1)",
-        borderRadius: _spacing,
-        overflow: "hidden",
-        padding: _spacing,
-      }}
-    >
-      <Animated.Image
-        style={[StyleSheet.absoluteFillObject, { opacity: 0.6 }, animeStyle]}
-        source={{ uri: item.image }}
-      />
+    <View style={styles.card}>
       <View
-        style={{
-          position: "absolute",
-          left: 0,
-          top: 0,
-          width: _screenHight,
-        }}
+        style={[
+          {
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,1)",
+            overflow: "hidden",
+            borderRadius: _spacing,
+            padding: _spacing,
+          },
+        ]}
       >
+        <Animated.Image
+          style={[StyleSheet.absoluteFillObject, { opacity: 0.6 }, animeStyle]}
+          source={{ uri: item.image }}
+        />
         <Animated.View
           style={[
             {
-              top: _screenHight,
-              transformOrigin: "0% 0%",
-              alignItems: "center",
-              justifyContent: "center",
+              position: "absolute",
+              left: 0,
+              top: 0,
+              width: _screenHight,
             },
             textStyles,
           ]}
         >
-          <Text
-            style={{
-              fontSize: 70,
-              color: "#fff",
-            }}
-            numberOfLines={1}
-            adjustsFontSizeToFit
+          <Animated.View
+            style={[
+              {
+                top: _screenHight,
+                transformOrigin: "0% 0%",
+                alignItems: "center",
+                justifyContent: "center",
+                transform: [
+                  {
+                    rotate: "-90deg",
+                  },
+                ],
+              },
+            ]}
           >
-            {item.name}
-          </Text>
+            <Text
+              style={{
+                fontSize: 70,
+                color: "#fff",
+              }}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+            >
+              {item.name}
+            </Text>
+          </Animated.View>
         </Animated.View>
+      </View>
+      <View>
+        <DetailsList index={index} scrollX={scrollX} />
       </View>
     </View>
   );
@@ -148,3 +204,10 @@ export const Parallax = ({ parallax }: Props) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  card: {
+    height: _screenHight,
+    width: _screenWidth,
+  },
+});
